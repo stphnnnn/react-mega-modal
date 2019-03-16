@@ -5,10 +5,19 @@
   "main": "dist/index.js",
   "author": "Steve Burtenshaw",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/stphnnnn/react-mega-modal"
+  },
+  "keywords": [
+    "react",
+    "modal",
+    "popup",
+    "overlay"
+  ],
   "scripts": {
     "start": "webpack --watch",
-    "build": "webpack",
-    "example:basic": "cd ./examples/basic && npm run start"
+    "build": "webpack"
   },
   "peerDependencies": {
     "react": "^16.8",
