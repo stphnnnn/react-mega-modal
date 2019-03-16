@@ -1,18 +1,18 @@
-# ✨ React Simple Modal
+# ✨ React Mega Modal
 
-React Simple Modal is a simple modal component for React.
+React Mega Modal is a simple modal component for React.
 
 ## Basic Usage
 
-1. The easiest way to use react-simple-modal is to install it from npm:
+1. The easiest way to use react-mega-modal is to install it from npm:
 
-`npm i react-simple-modal`
+`npm i react-mega-modal`
 
 2. Then use it in your react app:
 
 ```jsx
 import React from 'react';
-import Modal from 'react-simple-modal';
+import Modal from 'react-mega-modal';
 
 const App = () => (
   <Modal
