@@ -1,25 +1,28 @@
 {
   "name": "react-simple-modal",
+  "description": "A simple modal component for React",
   "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "react": "^16.6.3",
-    "react-dom": "^16.6.3",
-    "react-scripts": "2.1.1"
-  },
+  "main": "dist/index.js",
+  "author": "Steve Burtenshaw",
+  "license": "MIT",
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "start": "webpack --watch",
+    "build": "webpack",
+    "example:basic": "cd ./examples/basic && npm run start"
   },
-  "eslintConfig": {
-    "extends": "react-app"
+  "peerDependencies": {
+    "react": "^16.8",
+    "react-dom": "^16.8"
   },
-  "browserslist": [
-    ">0.2%",
-    "not dead",
-    "not ie <= 11",
-    "not op_mini all"
-  ]
+  "devDependencies": {
+    "@babel/core": "7.3.4",
+    "@babel/preset-env": "7.3.4",
+    "@babel/preset-react": "7.0.0",
+    "babel-loader": "8.0.5",
+    "webpack": "4.29.6",
+    "webpack-cli": "3.3.0"
+  },
+  "dependencies": {
+    "nanoid": "2.0.1"
+  }
 }
