@@ -1,5 +1,6 @@
 import React from 'react';
-import Portal from './Portal';
+import PropTypes from 'prop-types';
+
 import {
   useKeyPress,
   useOnClickOutside,
@@ -48,7 +49,11 @@ const defaultStyles = {
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  background: 'rgba(0,0,0,0.5)',
+Modal.propTypes = {
+  children: PropTypes.func,
+  modal: PropTypes.func.isRequired,
+  isOpen: PropTypes.bool,
+  customStyles: PropTypes.func,
 };
 
 export default Modal;
