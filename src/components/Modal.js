@@ -1,34 +1,37 @@
 import React from 'react';
-import Portal from './Portal';
-import {
-  useKeyPress,
-  useOnClickOutside,
-  useFocusOnTrigger,
-  useLockBodyScroll,
-} from '../hooks';
+import PropTypes from 'prop-types';
 
-function Modal({ children, modal }) {
+import { useKeyPress, useOnClickOutside, useFocusOnTrigger } from '../hooks';
+
+import Portal from './Portal';
+
+function Modal({ children, modal, isOpen, customStyles }) {
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const modalRef = React.useRef(null);
 
-  useKeyPress('Escape', () => setIsModalOpen(false));
-  useOnClickOutside(modalRef, () => setIsModalOpen(false));
-  useLockBodyScroll();
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
+
+  const styles = {
+    ...defaultStyles,
+    ...(customStyles ? customStyles(defaultStyles) : {}),
+  };
+
+  useKeyPress('Escape', closeModal);
+  useOnClickOutside(modalRef, closeModal);
   useFocusOnTrigger(modalRef, isModalOpen);
+
+  React.useEffect(() => {
+    setIsModalOpen(isOpen);
+  }, [isOpen]);
 
   return (
     <React.Fragment>
-      {children({
-        openModal: () => setIsModalOpen(true),
-      })}
+      {children && children({ openModal })}
       {isModalOpen && (
         <Portal>
-          <div style={defaultStyles}>
-            <div ref={modalRef} tabIndex={0}>
-              {modal({
-                closeModal: () => setIsModalOpen(false),
-              })}
-            </div>
+          <div style={styles.modal} ref={modalRef} tabIndex={0}>
+            {modal({ closeModal })}
           </div>
         </Portal>
       )}
@@ -37,18 +40,27 @@ function Modal({ children, modal }) {
 }
 
 const defaultStyles = {
-  position: 'absolute',
-  top: 0,
-  left: 0,
-  bottom: 0,
-  right: 0,
-  width: '100%',
-  height: '100%',
-  zIndex: 1000,
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  background: 'rgba(0,0,0,0.5)',
+  modal: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
+    width: '100%',
+    height: '100%',
+    zIndex: 1000,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    background: 'rgba(0, 0, 0, 0.5)',
+  },
+};
+
+Modal.propTypes = {
+  children: PropTypes.func,
+  modal: PropTypes.func.isRequired,
+  isOpen: PropTypes.bool,
+  customStyles: PropTypes.func,
 };
 
 export default Modal;
