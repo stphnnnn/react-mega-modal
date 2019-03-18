@@ -12,7 +12,11 @@ const bodyUtils = bindElementToQueries(document.body);
 afterEach(cleanup);
 
 test('Renders child render prop', () => {
-  const { getByText } = render(<Modal>{() => <button>Open</button>}</Modal>);
+  const { getByText } = render(
+    <Modal modal={() => <div>Modal content</div>}>
+      {() => <button>Open</button>}
+    </Modal>
+  );
 
   expect(getByText('Open')).toBeTruthy();
 });
@@ -30,7 +34,7 @@ test('Opens modal on open button click', () => {
 });
 
 test('Closes modal on close button click', () => {
-  const { getByText } = render(
+  render(
     <Modal
       modal={({ closeModal }) => (
         <div>
@@ -38,13 +42,57 @@ test('Closes modal on close button click', () => {
           <button onClick={closeModal}>Close</button>
         </div>
       )}
-    >
-      {({ openModal }) => <button onClick={openModal}>Open</button>}
-    </Modal>
+      isOpen={true}
+    />
   );
 
-  fireEvent.click(getByText('Open'));
   fireEvent.click(bodyUtils.getByText('Close'));
 
   expect(bodyUtils.queryByText('Modal content')).toBeFalsy();
+});
+
+test('Can set state from props', () => {
+  render(<Modal isOpen={true} modal={() => <h2>Modal content</h2>} />);
+
+  expect(bodyUtils.queryByText('Modal content')).toBeTruthy();
+});
+
+test('Closes modal on Escape key press', () => {
+  render(<Modal isOpen={true} modal={() => <h2>Modal content</h2>} />);
+
+  fireEvent.keyDown(document.body, {
+    key: 'Escape',
+    keyCode: 27,
+  });
+
+  expect(bodyUtils.queryByText('Modal content')).toBeFalsy();
+});
+
+test('Closes modal on click outside', () => {
+  const { container } = render(
+    <Modal isOpen={true} modal={() => <h2>Modal content</h2>} />
+  );
+
+  fireEvent.mouseDown(container);
+
+  expect(bodyUtils.queryByText('Modal content')).toBeFalsy();
+});
+
+test('Renders with custom styles', () => {
+  render(
+    <Modal
+      customStyles={styles => ({
+        modal: {
+          ...styles.modal,
+          color: 'red',
+        },
+      })}
+      isOpen={true}
+      modal={() => <div>Modal content</div>}
+    />
+  );
+
+  expect(bodyUtils.getByText('Modal content').parentNode).toHaveStyle(
+    'color: red;'
+  );
 });
